@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block head %}
+<title>Agenda</title>
+{% endblock %} {% block body %}
+<div class="content">
+  <h1>Agenda</h1>
+  {% if tasks|length < 1 %}
+  <h4 style="text-align: center">There are no agenda. Create one below!</h4>
+  {% else %}
+  <table>
+    <tr>
+      <th>Agenda</th>
+      <th>Added</th>
+      <th>Actions</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+      <td>
+        {{ task.content }}
+        <ol>
+          {% for parent in parentAgenda %}
+          <li>{{ parent.content }}</li>
+          {% endfor %}
+        </ol>
+      </td>
+      <td>{{ task.date_created.date() }}</td>
+      <td>
+        <a href="/addsub/{{ task.id }}">Add Sub</a>
+        <br />
+        <a href="/delete/{{ task.id }}">Delete</a>
+        <br />
+        <a href="/update/{{ task.id }}">Update</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% endif %}
+
+  <div class="form">
+    <form action="/" method="POST">
+      <input type="text" name="content" id="content" />
+      <input type="submit" value="Add Agenda" />
+    </form>
+  </div>
+</div>
+{% endblock %}
